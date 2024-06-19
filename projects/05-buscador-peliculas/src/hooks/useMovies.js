@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { searchMovies } from '../services/movies';
 
@@ -30,10 +30,12 @@ export function useMovies({ search, sort }) {
     }
   }
 
-  /* localeCompare va a comparar con acentos, por ejemplo, á con tilde */
-  const sortedMovies = sort
-    ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
-    : movies;
+  const sortedMovies = useMemo(() => {
+    return sort
+    /* localeCompare va a comparar con acentos, por ejemplo, á con tilde */
+      ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
+      : movies;
+  }, [movies, sort]);
 
   return { error, loading, movies: sortedMovies, getMovies }
 }
