@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import debounce from 'just-debounce-it';
 
 import { Movies } from './components/Movies'
 import { useMovies } from './hooks/useMovies';
@@ -15,6 +16,18 @@ function App() {
   const { error, search, setSearch } = useSearch();
   const { loading, movies, getMovies } = useMovies({ search, sort });
 
+  /* En cada render se está recreando un nuevo debounce,
+  por lo cual, en React debemos usar un useCallback
+  para asegurarnos que el debounce que creamos siempre sea el mismo
+  y no se esté recreando en cada render: */
+  const debouncedGetMovies = useCallback(
+    debounce(search => {
+      getMovies({ search });
+    }, 500),
+    [getMovies],
+  )
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     getMovies({ search });
@@ -28,6 +41,7 @@ function App() {
     const newQuery = event.target.value;
     if (newQuery.startsWith(' ')) return
     setSearch(newQuery);
+    debouncedGetMovies(newQuery);
   }
 
   return (
