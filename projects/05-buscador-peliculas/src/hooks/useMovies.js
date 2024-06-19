@@ -13,22 +13,26 @@ export function useMovies({ search, sort }) {
   const [error, setError] = useState(null);
   const previousSearch = useRef(search);
 
-  const getMovies = async () => {
-    if (search === previousSearch.current) return;
-  
-    try {
-      setLoading(true);
-      setError(null);
-      previousSearch.current = search;
-      const newMovies = await searchMovies({ search });
-      setMovies(newMovies);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      /* Finally se ejecuta tanto después de el try o del catch */
-      setLoading(false);
+  /* useMemo además de memorizar computaciones también permite
+  memorizar el cuerpo de una función: */
+  const getMovies = useMemo(() => {
+    return async ({ search }) => {
+      if (search === previousSearch.current) return;
+    
+      try {
+        setLoading(true);
+        setError(null);
+        previousSearch.current = search;
+        const newMovies = await searchMovies({ search });
+        setMovies(newMovies);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        /* Finally se ejecuta tanto después de el try o del catch */
+        setLoading(false);
+      }
     }
-  }
+  }, [])
 
   const sortedMovies = useMemo(() => {
     return sort
