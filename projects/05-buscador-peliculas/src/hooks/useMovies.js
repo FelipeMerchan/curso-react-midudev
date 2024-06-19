@@ -7,7 +7,7 @@ es totalmente agnóstica de lo que está pasando dentro del
 custom hook. Por lo cual, podemos trabajar en el useMovies
 sin necesidad de tocar nuestra aplicación. Es decir, separamos
 las responsabilidades. */
-export function useMovies({ search }) {
+export function useMovies({ search, sort }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,5 +30,10 @@ export function useMovies({ search }) {
     }
   }
 
-  return { error, loading, movies, getMovies }
+  /* localeCompare va a comparar con acentos, por ejemplo, á con tilde */
+  const sortedMovies = sort
+    ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
+    : movies;
+
+  return { error, loading, movies: sortedMovies, getMovies }
 }
