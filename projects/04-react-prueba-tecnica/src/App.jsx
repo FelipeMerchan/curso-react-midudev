@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import './app.css';
+
 const catEndpointRandomFact = 'https://catfact.ninja/fact';
 //const catEndpointImageUrl = `https://cataas.com/cat/says/${firstWorld}?size=50&color=red&json=true`
 const catPrefixImageUrl = 'https://cataas.com'
@@ -29,8 +31,10 @@ export function App() {
   return (
     <main>
       <h1>App</h1>
-      {fact && <p>{fact}</p>}
-      {imageUrl && <img src={`${catPrefixImageUrl}${imageUrl}`} alt={`Image extracted using the first three words for ${fact}`} />}
+      <section>
+        {fact && <p>{fact}</p>}
+        {imageUrl && <img src={`${catPrefixImageUrl}${imageUrl}`} alt={`Image extracted using the first three words for ${fact}`} />}
+      </section>
     </main>
   )
 }
