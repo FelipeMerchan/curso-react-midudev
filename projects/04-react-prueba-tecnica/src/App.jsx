@@ -38,7 +38,8 @@ export function App() {
     fetch(`https://cataas.com/cat/says/${threeFirstWords}?size=50&color=red&json=true`)
       .then(res => res.json())
       .then(data => {
-        const { url } = data;
+        const { _id } = data;
+        const url = `/cat/${_id}/says/${threeFirstWords}`;
         setImageUrl(url);
       })
   }, [fact])
