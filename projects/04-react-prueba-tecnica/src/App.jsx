@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import './app.css';
+import { getRandomFact } from "./services/facts";
 
-const catEndpointRandomFact = 'https://catfact.ninja/fact';
 //const catEndpointImageUrl = `https://cataas.com/cat/says/${firstWorld}?size=50&color=red&json=true`
 const catPrefixImageUrl = 'https://cataas.com'
 
@@ -13,21 +13,7 @@ export function App() {
 
   // Para recuperar la cita al cargar la página
   useEffect(() => {
-    fetch(catEndpointRandomFact)
-      .then(res => {
-        if (!res.ok) {
-          throw newError('Error recuperando la cita')
-        }
-
-        return res.json()
-      })
-      .then(data => {
-        const { fact } = data;
-        setFact(fact);
-      })
-      .catch((error) => {
-        setFactError('No se ha podido recuperar la cita');
-      })
+    getRandomFact().then(newFact => setFact(newFact));
   }, [])
 
   // Para recuperar la iamgen cada vez que tenemos una cita nueva
@@ -43,12 +29,18 @@ export function App() {
         setImageUrl(url);
       })
   }, [fact])
+
+  const handleClick = async () => {
+    const newFact = await getRandomFact();
+    setFact(newFact);
+  }
   
   
   return (
     <main>
       <h1>App</h1>
       <section>
+        <button onClick={handleClick}>Get new fact</button>
         {fact && <p>{fact}</p>}
         {imageUrl && <img src={`${catPrefixImageUrl}${imageUrl}`} alt={`Image extracted using the first three words for ${fact}`} />}
         {factError && <p>Hubo un error obteniendo la cita</p>}

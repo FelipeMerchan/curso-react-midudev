@@ -7,9 +7,11 @@ main {
   font-family: system-ui;
 }
 
-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
+@media screen and (min-width: 1024px) {
+  section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
 }
