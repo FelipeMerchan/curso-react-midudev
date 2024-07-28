@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 
 import './Filters.css'
 
+// eslint-disable-next-line react/prop-types
 export function Filters ({ onChange }) {
   const [minPrice, setMinPrice] = useState(0)
   const minPriceFilterId = useId()
