@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Products } from './components/Products'
 import { products as initialProducts } from './mocks/products.json'
 import { Header } from './components/Header'
@@ -8,9 +7,9 @@ import './index.css'
 import { useFilters } from './hooks/useFilters'
 
 export const App = () => {
-  const [products] = useState(initialProducts);
   const { filterProducts } = useFilters()
-  const filteredProducts = filterProducts(products)
+
+  const filteredProducts = filterProducts(initialProducts)
 
   return (
     <>
