@@ -1,3 +1,10 @@
+import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from "./constants"
+
+/* Con keyof recuperamos las keys del objeto SUPPORTED_LANGUAGES */
+export type Language = keyof typeof SUPPORTED_LANGUAGES
+export type AutoLanguage = typeof AUTO_LANGUAGE
+export type FromLanguage = Language | AutoLanguage
+
 /* las interfaces son más usadas para escribir el contrato de un objeto
 en lugar de los types. Las interfaces son más fáciles de extender.Lo que se
 suele hacer es que si es un objeto usemos directamente una interfaz: */
