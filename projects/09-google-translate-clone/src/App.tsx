@@ -21,7 +21,11 @@ function App() {
       <h1>Google Translate</h1>
       <Row>
         <Col>
-          <LanguageSelector onChange={setFromLanguage} />
+          <LanguageSelector
+            onChange={setFromLanguage}
+            type="from"
+            value={fromLanguage}
+          />
           {fromLanguage}
         </Col>
         <Col>
@@ -34,7 +38,11 @@ function App() {
           </Button>
         </Col>
         <Col>
-          <LanguageSelector onChange={setToLanguage} />
+          <LanguageSelector
+            onChange={setToLanguage}
+            type="to"
+            value={toLanguage}
+          />
           {toLanguage}
         </Col>
       </Row>
