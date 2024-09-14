@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 
 import { type FromLanguage, type Language, type TranslatorAction, type TranslatorState } from "../types.d";
+import { AUTO_LANGUAGE } from "../constants";
 
 const initialState: TranslatorState = {
   fromLanguage: "auto",
@@ -14,6 +15,10 @@ function reducer(state: TranslatorState, action: TranslatorAction) {
   const { type } = action;
 
   if (type === "INTERCHANGE_LANGUAGES") {
+    /* Dentro del reducer podemos tener lógica del estado. Por lo que
+    evitamos esta lógica en los componentes: */
+    if (state.fromLanguage === AUTO_LANGUAGE) return state;
+
     return {
       ...state,
       fromLanguage: state.toLanguage,
