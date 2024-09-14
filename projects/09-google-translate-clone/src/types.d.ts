@@ -24,3 +24,8 @@ export type TranslatorAction =
   | { type: 'SET_TO_LANGUAGE', payload: Language }
   | { type: 'SET_FROM_TEXT', payload: string }
   | { type: 'SET_RESULT', payload: string }
+
+export enum SectionType {
+  From = 'from',
+  To = 'to',
+}

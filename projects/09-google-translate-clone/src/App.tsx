@@ -1,11 +1,12 @@
+import { Container, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Container, Row, Col, Button } from "react-bootstrap";
 import "./App.css";
 import { useStore } from "./hooks/useStore";
 import { AUTO_LANGUAGE } from "./constants";
 import { ArrowIcon } from "./components/Icons";
 import { LanguageSelector } from "./components/LanguageSelector";
+import { SectionType } from "./types.d";
 
 function App() {
   const {
@@ -23,7 +24,7 @@ function App() {
         <Col>
           <LanguageSelector
             onChange={setFromLanguage}
-            type="from"
+            type={SectionType.From}
             value={fromLanguage}
           />
           {fromLanguage}
@@ -40,7 +41,7 @@ function App() {
         <Col>
           <LanguageSelector
             onChange={setToLanguage}
-            type="to"
+            type={SectionType.To}
             value={toLanguage}
           />
           {toLanguage}
