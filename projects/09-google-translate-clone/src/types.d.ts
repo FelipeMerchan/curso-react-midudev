@@ -1,5 +1,7 @@
 import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from "./constants"
 
+/* Al usar typeof es copiar el contrato del objeto y el keyof es
+indicar que de un objeto se quede con las llaves del objeto. */
 /* Con keyof recuperamos las keys del objeto SUPPORTED_LANGUAGES */
 export type Language = keyof typeof SUPPORTED_LANGUAGES
 export type AutoLanguage = typeof AUTO_LANGUAGE
