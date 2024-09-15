@@ -10,6 +10,7 @@ import { LanguageSelector } from "./components/LanguageSelector";
 import { SectionType } from "./types.d";
 import { TextArea } from "./components/TextArea";
 import { translate } from "./services/translate";
+import { useDebounce } from "./hooks/useDebounce";
 
 function App() {
   const {
@@ -24,11 +25,12 @@ function App() {
     setToLanguage,
     toLanguage,
   } = useStore();
+  const debouncedFromText = useDebounce(fromText, 250);
 
   useEffect(() => {
-    if (fromText === "") return;
+    if (debouncedFromText === "") return;
 
-    translate({ fromLanguage, toLanguage, text: fromText })
+    translate({ fromLanguage, toLanguage, text: debouncedFromText })
       .then((result) => {
         /* Los 2 iguales en TypeScript tienen un uso especial porque va a comprar si es null
       o undefined: */
@@ -38,7 +40,7 @@ function App() {
       .catch(() => {
         setResult("Error");
       });
-  }, [fromText, fromLanguage, setResult, toLanguage]);
+  }, [debouncedFromText, fromLanguage, setResult, toLanguage]);
 
   return (
     <Container fluid>
