@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { useStore } from "./hooks/useStore";
 import { AUTO_LANGUAGE } from "./constants";
-import { ArrowIcon } from "./components/Icons";
+import { ArrowIcon, ClipboardIcon } from "./components/Icons";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { SectionType } from "./types.d";
 import { TextArea } from "./components/TextArea";
@@ -26,6 +26,10 @@ function App() {
     toLanguage,
   } = useStore();
   const debouncedFromText = useDebounce(fromText, 350);
+
+  const handleClipboard = () => {
+    navigator.clipboard.writeText(result).catch(() => {});
+  };
 
   useEffect(() => {
     if (debouncedFromText === "") return;
@@ -76,12 +80,21 @@ function App() {
               type={SectionType.To}
               value={toLanguage}
             />
-            <TextArea
-              isLoading={isLoading}
-              onChange={setResult}
-              type={SectionType.To}
-              value={result}
-            />
+            <div style={{ position: "relative" }}>
+              <TextArea
+                isLoading={isLoading}
+                onChange={setResult}
+                type={SectionType.To}
+                value={result}
+              />
+              <Button
+                variant="link"
+                style={{ position: "absolute", left: 0, bottom: 0 }}
+                onClick={handleClipboard}
+              >
+                <ClipboardIcon />
+              </Button>
+            </div>
           </Stack>
         </Col>
       </Row>
