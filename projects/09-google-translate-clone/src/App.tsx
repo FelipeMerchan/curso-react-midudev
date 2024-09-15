@@ -25,7 +25,7 @@ function App() {
     setToLanguage,
     toLanguage,
   } = useStore();
-  const debouncedFromText = useDebounce(fromText, 250);
+  const debouncedFromText = useDebounce(fromText, 350);
 
   useEffect(() => {
     if (debouncedFromText === "") return;

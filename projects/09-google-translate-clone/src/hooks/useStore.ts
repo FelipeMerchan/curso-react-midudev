@@ -19,10 +19,14 @@ function reducer(state: TranslatorState, action: TranslatorAction) {
     evitamos esta lógica en los componentes: */
     if (state.fromLanguage === AUTO_LANGUAGE) return state;
 
+    const isLoading = state.fromText !== ''
+
     return {
       ...state,
       fromLanguage: state.toLanguage,
       toLanguage: state.fromLanguage,
+      isLoading,
+      result: '',
     };
   }
 
