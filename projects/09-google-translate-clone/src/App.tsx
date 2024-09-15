@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -8,6 +9,7 @@ import { ArrowIcon } from "./components/Icons";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { SectionType } from "./types.d";
 import { TextArea } from "./components/TextArea";
+import { translate } from "./services/translate";
 
 function App() {
   const {
@@ -22,6 +24,21 @@ function App() {
     setToLanguage,
     toLanguage,
   } = useStore();
+
+  useEffect(() => {
+    if (fromText === "") return;
+
+    translate({ fromLanguage, toLanguage, text: fromText })
+      .then((result) => {
+        /* Los 2 iguales en TypeScript tienen un uso especial porque va a comprar si es null
+      o undefined: */
+        if (result == null) return;
+        setResult(result);
+      })
+      .catch(() => {
+        setResult("Error");
+      });
+  }, [fromText]);
 
   return (
     <Container fluid>
