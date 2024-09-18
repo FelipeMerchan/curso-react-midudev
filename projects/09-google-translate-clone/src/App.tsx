@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
 import { useStore } from "./hooks/useStore";
-import { AUTO_LANGUAGE } from "./constants";
-import { ArrowIcon, ClipboardIcon } from "./components/Icons";
+import { AUTO_LANGUAGE, VOICE_FOR_LANGUAGE } from "./constants";
+import { ArrowIcon, ClipboardIcon, SpeakerIcon } from "./components/Icons";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { SectionType } from "./types.d";
 import { TextArea } from "./components/TextArea";
@@ -29,6 +29,13 @@ function App() {
 
   const handleClipboard = () => {
     navigator.clipboard.writeText(result).catch(() => {});
+  };
+
+  const handleSpeak = () => {
+    const utterance = new SpeechSynthesisUtterance(result);
+    utterance.lang = VOICE_FOR_LANGUAGE[toLanguage];
+    utterance.rate = 0.9;
+    speechSynthesis.speak(utterance);
   };
 
   useEffect(() => {
@@ -87,13 +94,21 @@ function App() {
                 type={SectionType.To}
                 value={result}
               />
-              <Button
-                variant="link"
-                style={{ position: "absolute", left: 0, bottom: 0 }}
-                onClick={handleClipboard}
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  display: "flex",
+                }}
               >
-                <ClipboardIcon />
-              </Button>
+                <Button variant="link" onClick={handleClipboard}>
+                  <ClipboardIcon />
+                </Button>
+                <Button variant="link" onClick={handleSpeak}>
+                  <SpeakerIcon />
+                </Button>
+              </div>
             </div>
           </Stack>
         </Col>
