@@ -13,6 +13,17 @@ import SyntaxReactHighlighter from "react-syntax-highlighter";
 import { gradientDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { type Question } from "./types";
 
+const getBackgroundColor = (info: Question, index: number) => {
+  const { userSelectedAnswer, correctAnswer } = info;
+  if (userSelectedAnswer == null) return "transparent";
+  if (index !== correctAnswer && index !== userSelectedAnswer)
+    return "transparent";
+  if (index === correctAnswer) return "green";
+  if (index === userSelectedAnswer) return "red";
+
+  return "transparent";
+};
+
 const Question = ({ info }: { info: Question }) => {
   const selectAnswer = useQuestionsStore((state) => state.selectAnswer);
 
@@ -32,7 +43,11 @@ const Question = ({ info }: { info: Question }) => {
       <List sx={{ bgcolor: "#333" }} disablePadding>
         {info.answers.map((answer, index) => (
           <ListItem key={index} disablePadding divider>
-            <ListItemButton onClick={createHandleClick(index)}>
+            <ListItemButton
+              disabled={info.userSelectedAnswer != null}
+              onClick={createHandleClick(index)}
+              sx={{ backgroundColor: getBackgroundColor(info, index) }}
+            >
               <ListItemText primary={answer} />
             </ListItemButton>
           </ListItem>
