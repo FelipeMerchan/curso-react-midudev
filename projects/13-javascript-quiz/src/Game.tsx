@@ -1,9 +1,13 @@
-import { IconButton, Stack } from "@mui/material";
+import { Card, IconButton, Stack, Typography } from "@mui/material";
 import { useQuestionsStore } from "./store/questions";
 import { type Question } from "./types";
 
 const Question = ({ info }: { info: Question }) => {
-  return null;
+  return (
+    <Card variant="outlined">
+      <Typography variant="h5">{info.question}</Typography>
+    </Card>
+  );
 };
 
 export const Game = () => {
