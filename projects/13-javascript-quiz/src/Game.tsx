@@ -12,6 +12,7 @@ import { useQuestionsStore } from "./store/questions";
 import SyntaxReactHighlighter from "react-syntax-highlighter";
 import { gradientDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { type Question } from "./types";
+import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 
 const getBackgroundColor = (info: Question, index: number) => {
   const { userSelectedAnswer, correctAnswer } = info;
@@ -60,8 +61,36 @@ const Question = ({ info }: { info: Question }) => {
 export const Game = () => {
   const questions = useQuestionsStore((state) => state.questions);
   const currentQuestion = useQuestionsStore((state) => state.currentQuestion);
+  const goNextQuestion = useQuestionsStore((state) => state.goNextQuestion);
+  const goPreviousQuestion = useQuestionsStore(
+    (state) => state.goPreviousQuestion
+  );
 
   const questionInfo = questions[currentQuestion];
 
-  return <Question info={questionInfo} />;
+  return (
+    <>
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <IconButton
+          onClick={goPreviousQuestion}
+          disabled={currentQuestion === 0}
+        >
+          <ArrowBackIosNew />
+        </IconButton>
+        {currentQuestion + 1} / {questions.length}
+        <IconButton
+          onClick={goNextQuestion}
+          disabled={currentQuestion >= questions.length - 1}
+        >
+          <ArrowForwardIos />
+        </IconButton>
+      </Stack>
+      <Question info={questionInfo} />
+    </>
+  );
 };

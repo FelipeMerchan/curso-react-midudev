@@ -7,6 +7,8 @@ interface State {
   currentQuestion: number;
   fetchQuestions: (limit: number) => Promise<void>;
   selectAnswer: (questionId: number, answerIndex: number) => void
+  goNextQuestion: () => void
+  goPreviousQuestion: () => void
 }
 
 /* create nos permite crear el estado global que ya podríamos leer
@@ -39,5 +41,21 @@ export const useQuestionsStore = create<State>((set, get) => ({
       userSelectedAnswer: answerIndex,
     }
     set({ questions: newQuestions })
-  }
+  },
+  goNextQuestion: () => {
+    const { currentQuestion, questions } = get()
+    const nextQuestion = currentQuestion + 1;
+
+    if (nextQuestion < questions.length) {
+      set({ currentQuestion: nextQuestion })
+    }
+  },
+  goPreviousQuestion: () => {
+    const { currentQuestion } = get()
+    const previousQuestion = currentQuestion - 1;
+
+    if (previousQuestion >= 0) {
+      set({ currentQuestion: previousQuestion })
+    }
+  },
 }))
