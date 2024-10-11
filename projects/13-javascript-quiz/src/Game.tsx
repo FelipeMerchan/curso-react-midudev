@@ -17,7 +17,7 @@ const Question = ({ info }: { info: Question }) => {
   return (
     <Card
       variant="outlined"
-      sx={{ bgcolor: "#222", padding: 2, textAlign: "start" }}
+      sx={{ bgcolor: "#222", padding: 2, textAlign: "start", marginTop: 4 }}
     >
       <Typography variant="h5">{info.question}</Typography>
       <SyntaxReactHighlighter language="javascript" style={gradientDark}>
