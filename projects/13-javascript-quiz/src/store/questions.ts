@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { type Question } from '../types'
 import confetti from 'canvas-confetti'
-import { persist } from 'zustand/middleware';
+import { persist, devtools } from 'zustand/middleware';
 import { getAllQuestions } from '../services/questions';
 
 interface State {
@@ -16,7 +16,7 @@ interface State {
 
 /* create nos permite crear el estado global que ya podríamos leer
 en cualquier sitio de la aplicación: */
-export const useQuestionsStore = create<State>()(persist((set, get) => {
+export const useQuestionsStore = create<State>()(devtools(persist((set, get) => {
   return {
     questions: [],
     currentQuestion: 0,
@@ -25,7 +25,7 @@ export const useQuestionsStore = create<State>()(persist((set, get) => {
 
       const questions = response.sort(() => Math.random() - 0.5).slice(0, limit)
       /* set es usado para actualizar el estado y get para leer el estado */
-      set({ questions })
+      set({ questions }, false, 'FETCH_QUESTIONS')
     },
     selectAnswer: (questionId: number, answerIndex: number) => {
       const { questions } = get();
@@ -43,14 +43,14 @@ export const useQuestionsStore = create<State>()(persist((set, get) => {
         isCorrectUserAnswer,
         userSelectedAnswer: answerIndex,
       }
-      set({ questions: newQuestions })
+      set({ questions: newQuestions }, false, 'SELECT_ANSWER')
     },
     goNextQuestion: () => {
       const { currentQuestion, questions } = get()
       const nextQuestion = currentQuestion + 1;
 
       if (nextQuestion < questions.length) {
-        set({ currentQuestion: nextQuestion })
+        set({ currentQuestion: nextQuestion }, false, 'GO_NEXT_QUESTION')
       }
     },
     goPreviousQuestion: () => {
@@ -58,14 +58,14 @@ export const useQuestionsStore = create<State>()(persist((set, get) => {
       const previousQuestion = currentQuestion - 1;
 
       if (previousQuestion >= 0) {
-        set({ currentQuestion: previousQuestion })
+        set({ currentQuestion: previousQuestion }, false, 'GO_PREVIOUS_QUESTION')
       }
     },
     reset: () => {
-      set({ currentQuestion: 0, questions: [] })
+      set({ currentQuestion: 0, questions: [] }, false, 'RESET')
     }
   }
 }, {
   name: 'questions', //le damos un nombre a lo que queremos persistir
   //getStorage: () => localStorage // indica dónde lo queremos guardar, por defecto es localStorage.
-}))
+})))
