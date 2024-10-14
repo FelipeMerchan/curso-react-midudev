@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { type Question } from '../types'
 import confetti from 'canvas-confetti'
 import { persist } from 'zustand/middleware';
+import { getAllQuestions } from '../services/questions';
 
 interface State {
   questions: Question[];
@@ -10,6 +11,7 @@ interface State {
   selectAnswer: (questionId: number, answerIndex: number) => void
   goNextQuestion: () => void
   goPreviousQuestion: () => void
+  reset: () => void
 }
 
 /* create nos permite crear el estado global que ya podríamos leer
@@ -19,10 +21,9 @@ export const useQuestionsStore = create<State>()(persist((set, get) => {
     questions: [],
     currentQuestion: 0,
     fetchQuestions: async (limit: number) => {
-      const res = await fetch('http://localhost:5173/data.json')
-      const json = await res.json();
+      const response = await getAllQuestions()
 
-      const questions = json.sort(() => Math.random() - 0.5).slice(0, limit)
+      const questions = response.sort(() => Math.random() - 0.5).slice(0, limit)
       /* set es usado para actualizar el estado y get para leer el estado */
       set({ questions })
     },
@@ -60,6 +61,9 @@ export const useQuestionsStore = create<State>()(persist((set, get) => {
         set({ currentQuestion: previousQuestion })
       }
     },
+    reset: () => {
+      set({ currentQuestion: 0, questions: [] })
+    }
   }
 }, {
   name: 'questions', //le damos un nombre a lo que queremos persistir
